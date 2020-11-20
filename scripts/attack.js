@@ -1,4 +1,4 @@
-import { getArgs, formatBigNumber, log, formatTime } from "utils.js";
+import { getArgs, formatBigNumber, log, formatTime } from "/lib/utils.js";
 
 /**
  * Attacks a given target.
@@ -10,6 +10,11 @@ import { getArgs, formatBigNumber, log, formatTime } from "utils.js";
 export async function main(ns) {
   const target = ns.args[0];
   const options = getArgs(ns.args.slice(1));
+
+  if (target == null) {
+    log(ns, "Missing parameter target.");
+    return;
+  }
 
   while (true) {
     await attack(ns, target, options);

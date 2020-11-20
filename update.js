@@ -1,4 +1,6 @@
-const SERVER = "http://localhost:5000/";
+const SERVER =
+  "https://raw.githubusercontent.com/maximeaubaret/bitburner-scripts/master";
+
 const FILES = [
   "lib/readJSONFile.js",
   "lib/utils.js",
@@ -9,7 +11,10 @@ const FILES = [
 
 export async function main(ns) {
   for (const file of FILES) {
-    const status = ns.wget(`${SERVER}${file}`, file);
+    const status = await ns.wget(
+      `${SERVER}/${file}?cache=${Math.random()}`,
+      "/" + file
+    );
     ns.tprint(`${file}: ${status ? "Success" : "Failure"}`);
   }
 }
