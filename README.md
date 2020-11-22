@@ -2,7 +2,7 @@
 
 My scripts for the [Bitburner](https://danielyxie.github.io/bitburner/) idle game.
 
-# Usage
+## Usage
 
 The first step is to download the installer on your Home computer.
 
@@ -20,7 +20,7 @@ run installer.js
 
 This will download all the scripts and their dependencies.
 
-# Development
+## Development
 
 To work on the scripts, it's easier to use a local webserver and use [ngrok](https://ngrok.com/) to expose it.
 
