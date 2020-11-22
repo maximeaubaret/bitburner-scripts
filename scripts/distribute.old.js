@@ -1,6 +1,11 @@
-import { BOTNET_FILE, ATTACK_SCRIPT } from "config.js";
-import { readJSONFile } from "readJSONFile.js";
-import { log } from "utils.js";
+import { readJSONFile } from "/lib/readJSONFile.js";
+import { log } from "/lib/utils.js";
+
+import {
+  BOTNET_FILE,
+  ATTACK_SCRIPT,
+  FILES_TO_COPY_FOR_DISTRIBUTED_ATTACK,
+} from "/config/config.js";
 
 /**
  * Distribute the attack on our botnet.
@@ -13,7 +18,7 @@ export async function main(ns) {
     // Kill all running tasks
     ns.killall(host);
 
-    const serverRam = ns.getServerRam(server)[0];
+    const serverRam = ns.getServerRam(host)[0];
     const scriptRam = ns.getScriptRam(ATTACK_SCRIPT);
 
     const threadsToUse = Math.floor(serverRam / scriptRam);
@@ -27,9 +32,14 @@ export async function main(ns) {
     }
 
     // Update the script on the host
-    ns.scp(ATTACK_SCRIPT, host);
+    ns.scp(FILES_TO_COPY_FOR_DISTRIBUTED_ATTACK, host);
 
     // Execute the script
-    ns.exec(ATTACK_SCRIPT, host, 1, ns.args);
+    ns.exec(
+      ATTACK_SCRIPT,
+      host,
+      threadsToUse,
+      ...[...ns.args, `threads=${threadsToUse}`]
+    );
   });
 }
