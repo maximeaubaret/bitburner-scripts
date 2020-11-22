@@ -1,12 +1,23 @@
 import { getHostsTree } from "/lib/scan.js";
 import { log, formatBigNumber } from "/lib/utils.js";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const tree = getHostsTree(ns);
+  if (tree == null) {
+    return;
+  }
+
   printTree(ns, tree);
 }
 
-function printTree(ns, host, root = null, level = 1) {
+/**
+ * @param {IGame} ns
+ * @param {import("/lib/scan").Host} host
+ */
+function printTree(ns, host, level = 1) {
   log(ns, padding(level), `${host.status} [${host.name}]`);
   log(ns, padding(level), `  - Required ports`, host.requiredPorts);
   log(
@@ -31,9 +42,9 @@ function printTree(ns, host, root = null, level = 1) {
   );
   log(ns);
 
-  host.neighboors.forEach((neighboor) =>
-    printTree(ns, neighboor, host, level + 1)
-  );
+  if (host.neighboors != null) {
+    host.neighboors.forEach((neighboor) => printTree(ns, neighboor, level + 1));
+  }
 }
 
 function padding(level = 1) {

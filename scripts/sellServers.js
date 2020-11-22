@@ -1,6 +1,11 @@
-import { getNodes } from "/lib/purchaseServer.js";
-import { log, getArgs } from "/lib/utils.js";
+// @ts-check
 
+import { getNodes } from "/lib/purchaseServer.js";
+import { log } from "/lib/utils.js";
+
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const nodes = getNodes(ns);
 
@@ -8,9 +13,9 @@ export async function main(ns) {
     log(ns, "Deleting node", node);
 
     // Kill scripts running on server
-    await ns.killall(node);
+    ns.killall(node);
 
     // Delete server
-    await ns.deleteServer(node);
+    ns.deleteServer(node);
   }
 }

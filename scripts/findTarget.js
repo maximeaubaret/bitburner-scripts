@@ -1,6 +1,11 @@
+// @ts-check
+
 import { getHosts } from "/lib/scan.js";
 import { getArgs, log, formatBigNumber, formatTime } from "/lib/utils.js";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const { showAll = false, host = null, top = 5 } = getArgs(ns.args);
 
@@ -16,7 +21,7 @@ export async function main(ns) {
     hosts = hosts.filter((h) => h.name === host);
   }
 
-  hosts = hosts.slice(0, top);
+  hosts = hosts.slice(0, Number(top));
 
   hosts.forEach((host) => {
     log(ns, `${host.status} [${host.name}]`);
@@ -38,6 +43,10 @@ export async function main(ns) {
   });
 }
 
+/**
+ * @param {any[]} array
+ * @param {string} key
+ */
 function sortBy(array, key) {
   return array.sort((a, b) => {
     return a[key] - b[key];

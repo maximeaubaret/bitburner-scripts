@@ -1,9 +1,11 @@
 import { log, getArgs } from "/lib/utils.js";
 import { getHosts, getHostInfos } from "/lib/scan.js";
-import { readJSONFile } from "/lib/readJSONFile.js";
 
 import { JOB_SCRIPTS, FILES_TO_COPY_FOR_REMOTE_JOBS } from "/config/config.js";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const {
     // Target to hack
@@ -97,6 +99,10 @@ export async function main(ns) {
   }
 }
 
+/**
+ * @param {IGame} ns
+ * @param {{ name: any; }} host
+ */
 function hostIsBusy(ns, host) {
   return (
     ns
@@ -105,13 +111,20 @@ function hostIsBusy(ns, host) {
   );
 }
 
+/**
+ * @param {IGame} ns
+ * @param {string} target
+ * @param {{ forceJob?: string, disableGrow?: boolean, moneyPerThread?: number }} options
+ */
 function getNextJobScript(
   ns,
   target,
-  { forceJob = false, disableGrow = false, moneyPerThread = false }
+  { forceJob, disableGrow = false, moneyPerThread }
 ) {
-  if (forceJob != false) {
+  if (forceJob) {
+    // @ts-ignore
     const forcedJob = JOB_SCRIPTS[forceJob.toUpperCase()];
+
     if (forcedJob == null) {
       log(ns, "Job", forceJob, "not found.");
       throw new Error("Job not found");
@@ -147,12 +160,19 @@ function getNextJobScript(
   return JOB_SCRIPTS.HACK;
 }
 
+/**
+ * @param {IGame} ns
+ */
 function getMinJobRamRequirement(ns) {
   return Object.values(JOB_SCRIPTS)
     .map((script) => ns.getScriptRam(script))
     .reduce((prev, curr) => (curr > prev ? curr : prev));
 }
 
+/**
+ * @param {IGame} ns
+ * @param {import("/lib/scan").Host} host
+ */
 function exploitHost(ns, host) {
   log(ns, "Exploiting host", host.name, "...");
 

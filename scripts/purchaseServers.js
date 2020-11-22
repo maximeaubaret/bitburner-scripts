@@ -1,6 +1,11 @@
+// @ts-check
+
 import { purchaseServer } from "/lib/purchaseServer.js";
 import { log, getArgs } from "/lib/utils.js";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const { ram = 8 } = getArgs(ns.args);
 

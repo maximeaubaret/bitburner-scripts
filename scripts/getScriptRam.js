@@ -1,5 +1,10 @@
+// @ts-check
+
 import { log } from "/lib/utils.js";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const script = ns.args[0];
 

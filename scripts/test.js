@@ -14,6 +14,10 @@ const TEMPLATE = {
   GROW: 0,
 };
 
+/**
+ * @param {IGame} ns
+ * @param {string} hostname
+ */
 function getRunningJobsForHost(ns, hostname) {
   const jobs = { ...TEMPLATE };
 
@@ -38,6 +42,10 @@ function getRunningJobsForHost(ns, hostname) {
   return jobs;
 }
 
+/**
+ * @param {IGame} ns
+ * @param {import("../lib/scan").Host[]} hosts
+ */
 function getRunningJobsForHosts(ns, hosts) {
   const jobs = { ...TEMPLATE };
 
@@ -51,10 +59,13 @@ function getRunningJobsForHosts(ns, hosts) {
   return jobs;
 }
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const { target, hack, weaken, grow } = getArgs(ns.args);
 
-  const targetHost = getHostInfos(ns, target);
+  const targetHost = getHostInfos(ns, String(target));
 
   const hosts = getHosts(ns);
   const jobs = getRunningJobsForHosts(ns, hosts);
@@ -72,8 +83,8 @@ export async function main(ns) {
   log(ns, "availableMoney=", targetHost.availableMoneyOnServer);
 
   const newSecurityLevel = computeNewSecurityLevel(
-    targetHost.securityLevel,
-    weaken || jobs.WEAKEN
+    targetHost,
+    weaken ? Number(weaken) : jobs.WEAKEN
   );
 
   const newMoney = computeNewAvailableMoney(
@@ -81,7 +92,7 @@ export async function main(ns) {
     targetHost.securityLevel,
     targetHost.serverGrowth,
     targetHost.maxMoney,
-    grow || jobs.GROW
+    grow ? Number(grow) : jobs.GROW
   );
 
   log(ns, "Expected values after:");
@@ -89,6 +100,10 @@ export async function main(ns) {
   log(ns, "availableMoney=", newMoney);
 }
 
+/**
+ * @param {import("/lib/scan").Host} host
+ * @param {number} threads
+ */
 function computeNewSecurityLevel(host, threads) {
   const securityLevel = host.securityLevel - ServerWeakenAmount * threads;
   return securityLevel < host.minSecurityLevel
@@ -96,6 +111,13 @@ function computeNewSecurityLevel(host, threads) {
     : securityLevel;
 }
 
+/**
+ * @param {number} oldAmount
+ * @param {number} securityLevel
+ * @param {number} serverGrowth
+ * @param {number} serverMaxMoney
+ * @param {number} threads
+ */
 function computeNewAvailableMoney(
   oldAmount,
   securityLevel,

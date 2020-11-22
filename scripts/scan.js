@@ -1,6 +1,11 @@
+// @ts-check
+
 import { getHosts } from "/lib/scan.js";
 import { log } from "/lib/utils.js";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const hosts = getHosts(ns);
 

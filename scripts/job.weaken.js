@@ -1,5 +1,10 @@
+// @ts-check
+
 import { getArgs, log } from "/lib/utils.js";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   const { target, threads = 1, silent = false } = getArgs(ns.args);
 

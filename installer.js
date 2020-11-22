@@ -2,7 +2,6 @@ const FILES = [
   "/config/config.js",
   "/config/constants.js",
   "/lib/purchaseServer.js",
-  "/lib/readJSONFile.js",
   "/lib/scan.js",
   "/lib/utils.js",
   "/scripts/findTarget.js",
@@ -22,6 +21,9 @@ const FILES = [
 const DEFAULT_SERVER =
   "https://raw.githubusercontent.com/maximeaubaret/bitburner-scripts/master";
 
+/**
+ * @param {IGame} ns
+ */
 export async function main(ns) {
   // If any argument is "--uninstall", uninstall all the scripts
   if (ns.args.find((arg) => arg === "--uninstall") != null) {
@@ -32,6 +34,9 @@ export async function main(ns) {
   await install(ns);
 }
 
+/**
+ * @param {IGame} ns
+ */
 async function install(ns) {
   const server = ns.args[0] || DEFAULT_SERVER;
 
@@ -41,6 +46,9 @@ async function install(ns) {
   }
 }
 
+/**
+ * @param {IGame} ns
+ */
 async function uninstall(ns) {
   if (!(await ns.prompt("Are you sure you want to uninstall?"))) {
     ns.tprint("Aborting...");
